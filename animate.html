@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Image Effects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            background-color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #uploaded-image {
+            width: 300px;
+            height: auto;
+            display: none;
+            margin: 20px auto;
+            border: 5px solid white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container {
+            margin: 20px 0;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: white;
+            color: #764ba2;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            background: #764ba2;
+            color: white;
+        }
+
+        #download-btn {
+            margin-top: 20px;
+            background: #ff5e62;
+            color: white;
+        }
+
+        #download-btn:hover {
+            background: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Animated Image Effects</h1>
+    <p>Upload an image, apply effects, and download as a GIF!</p>
+    <input type="file" id="file-input" accept="image/*">
+    <br>
+    <img id="uploaded-image" alt="Your Upload">
+    <div class="button-container">
+        <button onclick="applyEffect('glitch')">Glitch</button>
+        <button onclick="applyEffect('flash')">Flash</button>
+        <button onclick="applyEffect('shake')">Shake</button>
+        <button onclick="applyEffect('blur-pulse')">Blur Pulse</button>
+        <button onclick="applyEffect('hue-rotate')">Hue Rotate</button>
+    </div>
+    <button id="download-btn" onclick="downloadGif()">Download as GIF</button>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const uploadedImage = document.getElementById('uploaded-image');
+
+        // Load the uploaded image
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            // Check if a valid file is selected
+            if (!file || !file.type.startsWith("image/")) {
+                alert("Please upload a valid image file.");
+                return;
+            }
+
+            // Use FileReader to read the image and display it
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImage.src = e.target.result; // Set image source
+                uploadedImage.style.display = 'block'; // Make the image visible
+            };
+
+            reader.onerror = () => {
+                alert("Failed to load the image. Please try again.");
+            };
+
+            reader.readAsDataURL(file); // Read the file as a data URL
+        });
+
+        // Apply effect to the image
+        function applyEffect(effectClass) {
+            uploadedImage.className = ''; // Remove existing effects
+            uploadedImage.classList.add(effectClass); // Add the new effect
+        }
+
+        // Download the image as GIF (placeholder for now)
+        function downloadGif() {
+            alert("GIF download functionality will be added later!");
+        }
+
+        /* Animation Styles (same as before) */
+        .glitch {
+            animation: glitch 0.5s infinite alternate-reverse;
+        }
+
+        .flash {
+            animation: flash 1s infinite alternate-reverse;
+        }
+
+        .shake {
+            animation: shake 0.3s infinite;
+        }
+
+        .blur-pulse {
+            animation: blurPulse 2s infinite ease-in-out;
+        }
+
+        .hue-rotate {
+            animation: hueRotate 3s infinite linear;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0, 0); clip-path: inset(0 0 10% 0); }
+            33% { transform: translate(5px, -5px); clip-path: inset(10% 0 0 0); }
+            66% { transform: translate(-5px, 5px); clip-path: inset(0 10% 0 0); }
+            100% { transform: translate(0, 0); clip-path: inset(5% 5% 5% 5%); }
+        }
+
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.1; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, -5px); }
+        }
+
+        @keyframes blurPulse {
+            0%, 100% { filter: blur(0); }
+            50% { filter: blur(5px); }
+        }
+
+        @keyframes hueRotate {
+            from { filter: hue-rotate(0deg); }
+            to { filter: hue-rotate(360deg); }
+        }
+    </script>
+</body>
+</html>
